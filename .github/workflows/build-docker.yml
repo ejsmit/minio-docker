@@ -44,7 +44,7 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
             --tag "${{ steps.prepare.outputs.docker_image }}:latest" \
-            --tag "${{ steps.prepare.outputs.docker_image }}:{{ steps.prepare.outputs.version }}" \
+            --tag "${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}" \
             --output "type=image,push=false" .
       # - name: Docker Check Manifest
       #   run: |
