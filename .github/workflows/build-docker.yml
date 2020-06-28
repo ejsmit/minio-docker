@@ -1,0 +1,51 @@
+name: build-docker
+
+# on:
+#   push:
+#     tags: '*'
+
+
+on: push
+
+
+jobs:
+
+  buildx:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: minio/minio
+      - name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v1.4.0
+        id: buildx
+        with:
+          version: latest
+      - name: Prepare
+        id: prepare
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            TAG=${GITHUB_REF#refs/tags/}
+            echo ::set-output name=version::${TAG}
+          else
+            echo ::set-output name=version::dev
+          fi
+          echo ::set-output name=docker_image::ejsmit/minio
+          echo ::set-output name=docker_username::ejsmit
+      # - name: Docker Login
+      #   env:
+      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #   run: |
+      #     echo "${DOCKER_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin
+      - name: Run Buildx
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 \
+            --tag "${{ steps.prepare.outputs.docker_image }}:latest" \
+            --tag "${{ steps.prepare.outputs.docker_image }}:{{version}}" \
+            --output "type=image,push=false" .
+      # - name: Docker Check Manifest
+      #   run: |
+      #     docker run --rm mplatform/mquery ${{ steps.prepare.outputs.docker_image }}:latest
