@@ -3,8 +3,9 @@
 
 multi-arch docker images 
 
-project to build docker images.  No code in this project.  I just use
-it to schedule docker builds using github workflow.
+Rebuild of https://github.com/minio/minio as a multiplatform docker image for amd64, arm64 and arm.
+
+See also https://hub.docker.com/r/minio/minio
 
 
 
