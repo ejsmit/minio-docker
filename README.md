@@ -1,7 +1,7 @@
 
 # minio-docker
 
-### Not used any more.  I have migrated to 64-bit ubuntu on my raspebrry pis, and can now use the official builds.
+### Not used any more.  I have migrated to 64-bit ubuntu on my raspberry pis, and can now use the official builds.
 
 multi-arch docker images 
 
